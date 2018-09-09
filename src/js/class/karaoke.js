@@ -1,8 +1,6 @@
 class Karaoke {
 
-  constructor(browser, name, searchUrl, searchArtist) {
-    this.browser = browser;
-
+  constructor(name, searchUrl, searchArtist) {
     this.name = name;
     this.searchUrl = searchUrl;
     this.searchArtist = searchArtist;
@@ -11,22 +9,7 @@ class Karaoke {
     this.artistUrl = "";
   }
 
-  async fetchAllSong() {
-    let page = await this.browser.newPage();
-    await page.setViewport({ width: 1200, height: 800 });
-
-    await page.goto(this.searchUrl, {waitUntil: "domcontentloaded"});
-
-    await this._search(page);
-
-    this.songList = await this._fetchArtistSongs(page);
-
-    console.log(this.songList);
-    
-    // const lastPageIndex = await fetchPageListLastIndex();
-  }
-
-  async _search(page) {
+  async search(page) {
     let artistSelector = "";
 
     // DAMの場合検索ページにアーティストを入力してボタン押下
@@ -51,7 +34,7 @@ class Karaoke {
     ]);
   }
 
-  async _fetchArtistSongs(page) {
+  async fetchArtistSongs(page) {
     let songsResult = [];
     let lastIndex = this._fetchLastIndex(page);
     let nextSelector = "#content > div.inner > div:nth-child(4) > div > a:last-child";

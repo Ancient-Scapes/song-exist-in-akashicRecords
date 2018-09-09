@@ -6,7 +6,7 @@
 ## 使用方法
 
 - `npm install` か `yarn install` する 
-- ` babel-node src/js/main.js アーティスト名 カラオケ機種` を実行
+- ` yarn start アーティスト名 カラオケ機種` を実行
 - カラオケで歌えない曲の一覧がCUIに出力されます
 
 # 以下メモ

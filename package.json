@@ -6,7 +6,7 @@
   "author": "SugarShootingStar <ryu.8224@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "babel-node main.js"
+    "start": "babel-node src/js/main.js"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
