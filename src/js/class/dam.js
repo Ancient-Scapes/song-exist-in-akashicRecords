@@ -12,6 +12,8 @@ class Dam extends Karaoke{
   async search(page) {
   // DAMの場合検索ページにアーティストを入力してボタン押下
     const artistSelector = 'a[href^="/app/leaf/artistKaraokeLeaf.html?artistCode="]';
+
+    await page.goto(this.searchUrl, {waitUntil: "domcontentloaded"});
     
     await page.type("#keyword", this.searchArtist);
     await Promise.all([

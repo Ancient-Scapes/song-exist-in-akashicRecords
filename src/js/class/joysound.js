@@ -5,7 +5,7 @@ class Joysound extends Karaoke {
     super(searchArtist);
 
     this.name = "JoySound";
-    this.searchUrl = "https://www.joysound.com/web/search/artist?keyword=";
+    this.searchUrl = "https://www.joysound.com/web/search/artist?keyword=" + searchArtist;
   }
 
   async search(page) {

@@ -1,6 +1,7 @@
 import puppeteer from "puppeteer";
 import Dam from "./class/dam";
 import Joysound from "./class/dam";
+import jLyric from "./class/jLyric";
 
 // メイン処理
 (async() => {
@@ -10,6 +11,7 @@ import Joysound from "./class/dam";
   const karaokeType = process.argv[3];
 
   let karaoke = null;
+  let lyricSite = new jLyric(artist);
 
   if (isDam(karaokeType)) {
     karaoke = new Dam(artist);
@@ -18,11 +20,11 @@ import Joysound from "./class/dam";
     karaoke = new Joysound(artist);
   }
 
+  // カラオケサイトをスクレイピングし、曲を返す
   await fetchAllSongKaraoke(browser, karaoke);
 
-  // カラオケサイトをスクレイピングし、曲を返す
-
   // 比較サイト、サービスをスクレイピング
+  await fetchAllSongLyricSite(browser, lyricSite);
 
   // スクレイピング結果を比較
 
@@ -34,13 +36,23 @@ import Joysound from "./class/dam";
 async function fetchAllSongKaraoke(browser, karaoke) {
   let page = await browser.newPage();
 
-  await page.goto(karaoke.searchUrl, {waitUntil: "domcontentloaded"});
-
   await karaoke.search(page);
 
   karaoke.songList = await karaoke.fetchArtistSongs(page);
 
+  console.log("カラオケ取得完了");
   console.log(karaoke.songList);
+}
+
+async function fetchAllSongLyricSite(browser, lyricSite) {
+  let page = await browser.newPage();
+
+  await lyricSite.search(page);
+
+  lyricSite.songList = await lyricSite.fetchArtistSongs(page);
+
+  console.log("歌詞サイト取得完了");
+  console.log(lyricSite.songList);
 }
 
 // TODO 文字を全部大文字にして判定
