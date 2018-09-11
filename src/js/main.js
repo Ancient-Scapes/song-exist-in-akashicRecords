@@ -1,14 +1,6 @@
-import Karaoke from "./class/karaoke";
 import puppeteer from "puppeteer";
-
-const KARAOKE = {
-  JOYSOUND: {
-    SEARCH_URL : "https://www.joysound.com/web/search/artist?keyword="
-  },
-  DAM: {
-    SEARCH_URL : "https://www.clubdam.com/app/search/searchKaraokeKeywordArtist.html"
-  }
-};
+import Dam from "./class/dam";
+import Joysound from "./class/dam";
 
 // メイン処理
 (async() => {
@@ -17,9 +9,14 @@ const KARAOKE = {
   const artist = process.argv[2];
   const karaokeType = process.argv[3];
 
-  let karaoke = new Karaoke(karaokeType, 
-                            KARAOKE[karaokeType]["SEARCH_URL"], 
-                            artist);
+  let karaoke = null;
+
+  if (isDam(karaokeType)) {
+    karaoke = new Dam(artist);
+  } 
+  else if(isJoysound(karaokeType)) {
+    karaoke = new Joysound(artist);
+  }
 
   await fetchAllSongKaraoke(browser, karaoke);
 
@@ -42,5 +39,16 @@ async function fetchAllSongKaraoke(browser, karaoke) {
   await karaoke.search(page);
 
   karaoke.songList = await karaoke.fetchArtistSongs(page);
+
+  console.log(karaoke.songList);
+}
+
+// TODO 文字を全部大文字にして判定
+function isDam(karaokeType) {
+  return karaokeType === "DAM" ? true : false;
+}
+
+function isJoysound(karaokeType) {
+  return karaokeType === "Joysound" ? true : false;
 }
 
