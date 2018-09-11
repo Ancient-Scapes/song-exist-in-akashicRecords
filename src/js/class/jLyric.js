@@ -9,9 +9,16 @@ class JLyric extends lyricSite {
   }
 
   async search(page) {
-    const artistSelector = "#mnb > div:nth-child(2) > p.mid > a";
-
     await page.goto(this.searchUrl, {waitUntil: "domcontentloaded"});
+
+    // アーティストの完全一致を調べる用
+    const artistList = await page.evaluate(() => {
+      const listSelector = "#mnb > div > p.mid > a";
+      const list = Array.from(document.querySelectorAll(listSelector));
+      return list.map(data => data.innerText);
+    });
+
+    const artistSelector = await fetchContainsSelector(this.searchArtist, artistList);
 
     // アーティストのページへ遷移
     await Promise.all([
@@ -28,6 +35,15 @@ class JLyric extends lyricSite {
       return list.map(data => data.textContent);
     });
   }
+}
+
+async function fetchContainsSelector(artist, artistList) {
+  // 完全一致で一致したアーティストをクリックする
+  let index = artistList.indexOf(artist);
+  // TODO アーティストいなかった時はエラーメッセージ出して終わらせたい
+  if(index == -1) console.log("完全一致するアーティストがいません");
+
+  return "#mnb > div:nth-child(" + (index + 2) + ") > p.mid > a";
 }
 
 export default JLyric;

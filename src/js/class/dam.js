@@ -11,15 +11,23 @@ class Dam extends Karaoke{
 
   async search(page) {
   // DAMの場合検索ページにアーティストを入力してボタン押下
-    const artistSelector = 'a[href^="/app/leaf/artistKaraokeLeaf.html?artistCode="]';
-
     await page.goto(this.searchUrl, {waitUntil: "domcontentloaded"});
     
+    // 検索して引っかかったアーティストの一覧を表示する
     await page.type("#keyword", this.searchArtist);
     await Promise.all([
       page.click("#searchBtn"),
       page.waitForNavigation({timeout: 60000, waitUntil: "domcontentloaded"}),
     ]);
+
+    // アーティストの完全一致を調べる用
+    const artistList = await page.evaluate(() => {
+      const listSelector = "#content > div > table > tbody > tr > td.artist > a";
+      const list = Array.from(document.querySelectorAll(listSelector));
+      return list.map(data => data.innerText);
+    });
+
+    const artistSelector = await fetchContainsSelector(this.searchArtist, artistList);
 
     // アーティストのページへ遷移
     await Promise.all([
@@ -62,6 +70,15 @@ class Dam extends Karaoke{
     // 正規表現で最後のページの数字を抜き出す
     return captionStr.match(/[\d]{1,2}/g)[1];
   }
+}
+
+async function fetchContainsSelector(artist, artistList) {
+  // 完全一致で一致したアーティストをクリックする
+  let index = artistList.indexOf(artist);
+  // TODO アーティストいなかった時はエラーメッセージ出して終わらせたい
+  if(index == -1) console.log("完全一致するアーティストがいません");
+
+  return "#content > div > table > tbody > tr:nth-child(" + (index + 1) + ") > td.artist > a";
 }
 
 export default Dam;
