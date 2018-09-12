@@ -1,8 +1,8 @@
-class LylicSite {
+class LyricSite {
   constructor(searchArtist) {
     this.searchArtist = searchArtist;
     this.songList = [];
   }
 }
 
-export default LylicSite;
+export default LyricSite;

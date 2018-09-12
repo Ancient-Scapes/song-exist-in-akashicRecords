@@ -1,3 +1,5 @@
+import consola from "consola";
+
 import Karaoke from "./karaoke";
 
 class Dam extends Karaoke{
@@ -57,6 +59,7 @@ class Dam extends Karaoke{
         page.waitForNavigation({timeout: 60000, waitUntil: "domcontentloaded"}),
       ]);
     }
+    // ページごとに区切られた2次元配列を1次元にして返す
     return Array.prototype.concat.apply([], songsResult);
   }
 
@@ -76,7 +79,10 @@ async function fetchContainsSelector(artist, artistList) {
   // 完全一致で一致したアーティストをクリックする
   let index = artistList.indexOf(artist);
   // TODO アーティストいなかった時はエラーメッセージ出して終わらせたい
-  if(index == -1) console.log("完全一致するアーティストがいません");
+  if(index == -1) {
+    consola.error("完全一致するアーティストがいません");
+    process.exit(1);
+  }
 
   return "#content > div > table > tbody > tr:nth-child(" + (index + 1) + ") > td.artist > a";
 }

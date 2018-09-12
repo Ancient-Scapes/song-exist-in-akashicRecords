@@ -1,4 +1,6 @@
-import lyricSite from "./lylicSite";
+import consola from "consola";
+
+import lyricSite from "./lyricSite";
 
 class JLyric extends lyricSite {
   constructor(searchArtist) {
@@ -41,7 +43,10 @@ async function fetchContainsSelector(artist, artistList) {
   // 完全一致で一致したアーティストをクリックする
   let index = artistList.indexOf(artist);
   // TODO アーティストいなかった時はエラーメッセージ出して終わらせたい
-  if(index == -1) console.log("完全一致するアーティストがいません");
+  if(index == -1) {
+    consola.error("完全一致するアーティストがいません");
+    process.exit(1);
+  }
 
   return "#mnb > div:nth-child(" + (index + 2) + ") > p.mid > a";
 }

@@ -15,6 +15,7 @@
     "babel-loader": "^8.0.2",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
+    "consola": "^1.4.3",
     "jquery": "^3.3.1",
     "puppeteer": "^1.7.0"
   }

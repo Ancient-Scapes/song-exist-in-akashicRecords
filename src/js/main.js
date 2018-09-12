@@ -1,24 +1,18 @@
 import puppeteer from "puppeteer";
-import Dam from "./class/dam";
-import Joysound from "./class/dam";
-import jLyric from "./class/jLyric";
+import consola   from "consola";
+
+import helper    from "./helper";
+import jLyric    from "./class/jLyric";
 
 // メイン処理
 (async() => {
   const browser = await puppeteer.launch();
 
-  const artist = process.argv[2];
+  const artist      = helper.getArtist(process.argv[2]);
   const karaokeType = process.argv[3];
 
-  let karaoke = null;
+  let karaoke = helper.getKaraoke(artist, karaokeType);
   let lyricSite = new jLyric(artist);
-
-  if (isDam(karaokeType)) {
-    karaoke = new Dam(artist);
-  } 
-  else if(isJoysound(karaokeType)) {
-    karaoke = new Joysound(artist);
-  }
 
   // カラオケサイトをスクレイピングし、曲を返す
   await fetchAllSongKaraoke(browser, karaoke);
@@ -26,41 +20,47 @@ import jLyric from "./class/jLyric";
   // 比較サイト、サービスをスクレイピング
   await fetchAllSongLyricSite(browser, lyricSite);
 
-  // スクレイピング結果を比較
+  // スクレイピング結果を比較し、カラオケにない曲リストをもらう
+  const result = await compareSongResult(karaoke, lyricSite);
 
-  // 比較結果をコンソールに出力
+  // コンソールに出力する
+  await outputResult(result, karaoke);
 
   browser.close();
 })();
 
 async function fetchAllSongKaraoke(browser, karaoke) {
+  consola.start("カラオケ処理開始");
+
   let page = await browser.newPage();
-
   await karaoke.search(page);
-
   karaoke.songList = await karaoke.fetchArtistSongs(page);
 
-  console.log("カラオケ取得完了");
-  console.log(karaoke.songList);
+  consola.success("カラオケ取得完了");
 }
 
 async function fetchAllSongLyricSite(browser, lyricSite) {
+  consola.start("歌詞サイト処理開始");
+
   let page = await browser.newPage();
-
   await lyricSite.search(page);
-
   lyricSite.songList = await lyricSite.fetchArtistSongs(page);
 
-  console.log("歌詞サイト取得完了");
-  console.log(lyricSite.songList);
+  consola.success("歌詞サイト取得完了");
 }
 
-// TODO 文字を全部大文字にして判定
-function isDam(karaokeType) {
-  return karaokeType === "DAM" ? true : false;
+async function compareSongResult(karaoke, lyricSite) {
+  // 歌詞サイトにない曲かつ、カラオケの独自の曲以外を返す
+  return karaoke.songList.filter(songKaraoke => 
+    lyricSite.songList.indexOf(songKaraoke) == -1 &&
+     (songKaraoke.indexOf("生音") == -1    &&
+      songKaraoke.indexOf("プロオケ") == -1 &&
+      songKaraoke.indexOf("まま音") == -1   )
+  );  
 }
 
-function isJoysound(karaokeType) {
-  return karaokeType === "Joysound" ? true : false;
+async function outputResult(result, karaoke) {
+  consola.success(karaoke.searchArtist + "の" + karaoke.name + "に入っていない曲リスト");
+  console.log(result);
 }
 
