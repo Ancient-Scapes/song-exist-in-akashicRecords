@@ -57,7 +57,7 @@ class Dam extends Karaoke{
         page.waitForNavigation({timeout: 60000, waitUntil: "domcontentloaded"}),
       ]);
     }
-    return songsResult;
+    return Array.prototype.concat.apply([], songsResult);
   }
 
   async _fetchLastIndex(page) {
