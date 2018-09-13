@@ -1,3 +1,5 @@
+import jaconv from "jaconv";
+
 import Dam from "./class/dam";
 import Joysound from "./class/joysound";
 
@@ -14,3 +16,12 @@ exports.getArtist = function(artist) {
     return artist;
   }
 };
+
+exports.sanitizeSong = function(song) {
+  // 記号の全角、半角を統一
+  let retSong = jaconv.normalize(song);
+  // スペースの数をあわせる
+  retSong = retSong.split(" ").join("");
+
+  return retSong;
+}

@@ -74,12 +74,12 @@ async function fetchAllSongLyricSite(browser, lyricSite) {
  */
 async function compareSongResult(karaoke, lyricSite) {
   // 曲のスペースをお互いに詰めてから比較する
-  let karaokeSongList = karaoke.songList.map(song => song.split(" ").join(""));
+  let karaokeSongList = karaoke.songList.map(song => helper.sanitizeSong(song));
   
   // 歌詞サイトの曲一覧からDAMの曲一覧にない曲を抽出
   return lyricSite.songList.filter(songLyricSite => 
-    karaokeSongList.indexOf(songLyricSite.split(" ").join("")) == -1
-  );  
+    karaokeSongList.indexOf(helper.sanitizeSong(songLyricSite)) == -1
+  );
 }
 
 /**

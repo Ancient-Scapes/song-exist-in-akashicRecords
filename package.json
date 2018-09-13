@@ -16,6 +16,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "consola": "^1.4.3",
+    "jaconv": "^1.0.1",
     "puppeteer": "^1.7.0"
   }
 }
