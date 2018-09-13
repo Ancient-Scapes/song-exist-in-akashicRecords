@@ -1,41 +1,54 @@
-# カラオケでアーティストの歌えない曲一覧を取得するやつ
+# song-exist-in-AkashicRecords
+
+## アカシックレコードにアクセスし、カラオケに存在しない曲を抽出するCUIアプリケーション
+
+![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
 
 <img src="./readme_picture/result.png" width="60%">
 
-## 概要
-カラオケでアーティストの歌えない曲を抽出するCUIアプリケーションです
+# 概要(Description)
+
+カラオケでアーティストの歌えない曲を抽出し、出力するCUIアプリケーションです
+
 現状カラオケ機種はDAMしか対応していません(2018/09/12)
 
-## 使用方法
+Acquire songs that are not in singer's japanese karaoke(DAM or JoySound).
 
-- `npm install` か `yarn install` する 
-- `npm install -g babel-cli` する
-- ` yarn start アーティスト名 カラオケ機種` を実行
-- カラオケで歌えない曲の一覧がCUIに出力されます
+# Requirements(動作環境)
 
-## Q&A
-- スペース区切りのアーティストを入力するには？
-  - _(アンダーバー)で区切ってください。内部でスペースに置換されます。
+- MacOS X High Sierra 
 
-# 以下メモ
+# Installation(セットアップ方法)
 
-## スクレイピングサイト
-  
-- カラオケサイト(Joy,DAM)
-  - アーティストごとの曲一覧を配列で取得 
-- 歌詞サイト(J-Lyricなど)
-  - アーティストごとの曲一覧を配列で取得 
-- 音楽ストリーミングサービス(spotify,Apple Music)
-  - アーティストごとの曲一覧を配列で取得 
+- `npm install` or `yarn install`  
+- `npm install -g babel-cli` 
 
-## オプションについて
+# Usage(使用方法)
 
-- DAMかjoyかの選択ができるように
-- 歌詞サイトかspotifyかApple Musicかの選択ができるように
+- `npm start アーティスト名 カラオケ機種(JoySound or DAM)`
+- `yarn start アーティスト名 カラオケ機種(JoySound or DAM)`
 
-## フロー
+- `npm start artistName karaokeType(JoySound or DAM)`
+- `yarn start artistName karaokeType(JoySound or DAM)`
 
-- カラオケサイトにアクセスして配列もらう
-- 歌詞サイトにアクセスして配列もらう
-- 比較して結果返す
-- 結果を画面に出力する
+## example(例)
+
+-  `yarn start ViViD DAM`
+-  `yarn start Plastic_Tree DAM`
+
+# Q&A
+
+- アーティスト名にスペースが含まれる場合は？
+  - スペース( )をアンダーバー(_)に置き換えて入力してください。
+- If the artist name contains a space？(ex.Plastic Tree)
+  - Please replace space( ) with underscore(_).
+
+# Licence(ライセンス)
+
+This software is released under the MIT License, see LICENSE.
+
+[MIT](https://github.com/tcnksm/tool/blob/master/LICENCE)
+
+# Authors(作者)
+
+SugarShootingStar(@_Ancient_Scapes)
