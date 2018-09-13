@@ -1,6 +1,6 @@
 # song-exist-in-AkashicRecords
 
-## アカシックレコードにアクセスし、カラオケに存在しない曲を抽出するCUIアプリケーション
+## アカシックレコードにアクセスし、歌手ごとのカラオケに存在しない曲を抽出するやつ
 
 ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
 
@@ -8,7 +8,7 @@
 
 # 概要(Description)
 
-カラオケでアーティストの歌えない曲を抽出し、出力するCUIアプリケーションです
+歌手ごとのカラオケに入っていない曲を抽出してきて出力します。
 
 現状カラオケ機種はDAMしか対応していません(2018/09/12)
 
