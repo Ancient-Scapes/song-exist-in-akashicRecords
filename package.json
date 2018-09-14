@@ -1,22 +1,21 @@
 {
   "name": "song-exist-in-akashicRecords",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/js/main.js",
   "repository": "git@github.com:SugarShootingStar/song-exist-in-akashicRecords.git",
   "author": "SugarShootingStar <ryu.8224@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "babel-node src/js/main.js"
+    "start": "node_modules/.bin/babel-node src/js/main.js"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
-    "babel-loader": "^8.0.2",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "consola": "^1.4.3",
     "jaconv": "^1.0.1",
-    "puppeteer": "^1.7.0"
-  }
+    "puppeteer": "^1.8.0"
+  },
+  "dependencies": {}
 }
