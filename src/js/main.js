@@ -2,36 +2,31 @@ import puppeteer from "puppeteer";
 import consola   from "consola";
 
 import helper    from "./helper";
-import jLyric    from "./class/jLyric";
-
 import LyricSite from "./class/lyricSite";
 import Karaoke   from "./class/karaoke";
 
 // メイン処理
 (async() => {
-  const browser = await puppeteer.launch();
+  const browser     = await puppeteer.launch();
+  let page          = await browser.newPage();
 
+  // コマンドライン引数からパラメータを取得
   const artist      = helper.getArtist(process.argv[2]);
   const karaokeType = process.argv[3];
+  let karaoke       = helper.getKaraoke(artist, karaokeType);
+  let lyricSite     = helper.getLyricSite(artist);
 
-  let karaoke = helper.getKaraoke(artist, karaokeType);
-  let lyricSite = new jLyric(artist);
-
-  // カラオケサイトをスクレイピングし、曲を返す
-  await fetchAllSongKaraoke(browser, karaoke);
-
-  // 比較サイト、サービスをスクレイピング
-  await fetchAllSongLyricSite(browser, lyricSite);
-
-  // スクレイピング結果を比較し、カラオケにない曲リストをもらう
+  // カラオケサイトから曲を取得
+  await fetchAllSongKaraoke(page, karaoke);
+  // 歌詞サイトから曲を取得
+  await fetchAllSongLyricSite(page, lyricSite);
+  // カラオケの曲配列と歌詞サイトの曲配列を比較し差分配列を作成
   const result = await compareSongResult(karaoke, lyricSite);
 
-  // コンソールに出力する
+  // 差分配列をコンソールに出力する
   await outputResult(result, karaoke);
-
   browser.close();
 })();
-
 
 /**
  * アーティストのカラオケの曲一覧を1次元配列で取得する
@@ -39,10 +34,9 @@ import Karaoke   from "./class/karaoke";
  * @param {object}  browser 使用ブラウザ
  * @param {Karaoke} karaoke カラオケclass
  */
-async function fetchAllSongKaraoke(browser, karaoke) {
+async function fetchAllSongKaraoke(page, karaoke) {
   consola.start("カラオケ処理開始");
 
-  let page = await browser.newPage();
   await karaoke.search(page);
   karaoke.songList = await karaoke.fetchArtistSongs(page);
 
@@ -55,10 +49,9 @@ async function fetchAllSongKaraoke(browser, karaoke) {
  * @param {object}    browser   使用ブラウザ
  * @param {LyricSite} lyricSite 歌詞サイトclass
  */
-async function fetchAllSongLyricSite(browser, lyricSite) {
+async function fetchAllSongLyricSite(page, lyricSite) {
   consola.start("歌詞サイト処理開始");
 
-  let page = await browser.newPage();
   await lyricSite.search(page);
   lyricSite.songList = await lyricSite.fetchArtistSongs(page);
 
@@ -73,12 +66,13 @@ async function fetchAllSongLyricSite(browser, lyricSite) {
  * @returns カラオケに入ってない曲の1次元配列
  */
 async function compareSongResult(karaoke, lyricSite) {
-  // 曲のスペースをお互いに詰めてから比較する
-  let karaokeSongList = karaoke.songList.map(song => helper.sanitizeSong(song));
+  // 曲名の比較用配列を作成する
+  let karaokeSongList = karaoke.songList.map(song => helper.sanitizeSongName(song));
   
-  // 歌詞サイトの曲一覧からDAMの曲一覧にない曲を抽出
+  // 歌詞サイトの曲一覧からカラオケの曲一覧にない曲を抽出
   return lyricSite.songList.filter(songLyricSite => 
-    karaokeSongList.indexOf(helper.sanitizeSong(songLyricSite)) == -1
+    // 歌詞サイトも曲も一時的に比較用文字列に変換
+    karaokeSongList.indexOf(helper.sanitizeSongName(songLyricSite)) == -1
   );
 }
 

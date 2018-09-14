@@ -1,7 +1,7 @@
 class LyricSite {
   constructor(searchArtist) {
     this.searchArtist = searchArtist;
-    this.songList = [];
+    this.songList     = [];
   }
 }
 
