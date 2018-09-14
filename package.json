@@ -16,6 +16,5 @@
     "consola": "^1.4.3",
     "jaconv": "^1.0.1",
     "puppeteer": "^1.8.0"
-  },
-  "dependencies": {}
+  }
 }

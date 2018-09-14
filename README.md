@@ -21,7 +21,6 @@ Acquire songs that are not in singer's japanese karaoke(DAM or JoySound).
 # Installation(セットアップ方法)
 
 - `npm install` or `yarn install`  
-- `npm install -g babel-cli` 
 
 # Usage(使用方法)
 
