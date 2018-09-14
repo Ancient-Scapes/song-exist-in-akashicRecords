@@ -67,12 +67,12 @@ async function fetchAllSongLyricSite(page, lyricSite) {
  */
 async function compareSongResult(karaoke, lyricSite) {
   // 曲名の比較用配列を作成する
-  let karaokeSongList = karaoke.songList.map(song => helper.sanitizeSongName(song));
+  let karaokeSongList = karaoke.songList.map((song) => helper.sanitizeSongName(song));
   
   // 歌詞サイトの曲一覧からカラオケの曲一覧にない曲を抽出
   return lyricSite.songList.filter(songLyricSite => 
     // 歌詞サイトも曲も一時的に比較用文字列に変換
-    karaokeSongList.indexOf(helper.sanitizeSongName(songLyricSite)) == -1
+    karaokeSongList.indexOf(helper.sanitizeSongName(songLyricSite)) === -1
   );
 }
 

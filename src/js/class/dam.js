@@ -53,7 +53,6 @@ class Dam extends Karaoke{
 
 async function fetchLastIndex(page) {
   const s_caption = "#content > div.inner > div:nth-child(2) > div.searchResult.clearfix > p:nth-child(2)";
-  
   // 正規表現で抜きだす用の文字列を取得する
   let captionStr = await helper.fetchEvaluateText(page, s_caption);
   // 正規表現で最後のページの数字を抜き出す

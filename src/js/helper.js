@@ -42,14 +42,14 @@ exports.sanitizeSongName = function(song) {
 exports.fetchEvaluateText = async function(page, nodeSelector) {
   return page.evaluate((selector) => {
     return document.querySelector(selector).textContent;
-  }, nodeSelector)
+  }, nodeSelector);
 }
 
 exports.fetchEvaluateTextArray = async function(page, listSelector) {
   return page.evaluate((selector) => {
     const list = Array.from(document.querySelectorAll(selector));
-    return list.map(data => data.innerText);
-  }, listSelector)
+    return list.map((data) => data.innerText);
+  }, listSelector);
 }
 
 exports.clickSelector = async function(page, selector) {
