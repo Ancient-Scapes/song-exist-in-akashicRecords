@@ -24,10 +24,10 @@ Acquire songs that are not in singer's japanese karaoke(DAM or JoySound).
 
 # Usage(使用方法)
 
-- `npm start アーティスト名 カラオケ機種(JoySound or DAM)`
+- `npm run start アーティスト名 カラオケ機種(JoySound or DAM)`
 - `yarn start アーティスト名 カラオケ機種(JoySound or DAM)`
 
-- `npm start artistName karaokeType(JoySound or DAM)`
+- `npm run start artistName karaokeType(JoySound or DAM)`
 - `yarn start artistName karaokeType(JoySound or DAM)`
 
 ## example(例)
