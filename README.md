@@ -33,15 +33,15 @@ Acquire songs that are not in singer's japanese karaoke(DAM or JoySound).
 - j means JoySound.
 - d means DAM.
 
-# Song Source(曲取得元)
-- [JoySound](https://www.joysound.com/web/search/artist/8583)
-- [DAM](https://www.clubdam.com/app/leaf/artistKaraokeLeaf.html?artistCode=306474)
-- [歌ネット](https://www.uta-net.com/search/?Aselect=1&Keyword=%E3%82%B7%E3%83%89&Bselect=4&x=30&y=18)
-
 ## example(例)
 
 -  `yarn start ViViD DAM`
 -  `yarn start Plastic_Tree DAM`
+
+# Song Source(曲取得元)
+- [JoySound](https://www.joysound.com/web/search/artist/8583)
+- [DAM](https://www.clubdam.com/app/leaf/artistKaraokeLeaf.html?artistCode=306474)
+- [歌ネット](https://www.uta-net.com/search/?Aselect=1&Keyword=%E3%82%B7%E3%83%89&Bselect=4&x=30&y=18)
 
 # Q&A
 
