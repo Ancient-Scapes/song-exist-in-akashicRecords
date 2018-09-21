@@ -55,6 +55,6 @@ exports.fetchEvaluateTextArray = async function(page, listSelector) {
 exports.clickSelector = async function(page, selector) {
   return Promise.all([
     page.click(selector),
-    page.waitForNavigation({timeout: 60000, waitUntil: "domcontentloaded"}),
+    page.waitForNavigation({timeout: 60000, waitUntil: "networkidle2"}),
   ]);
 }

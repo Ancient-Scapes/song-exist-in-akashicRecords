@@ -7,8 +7,11 @@ import Karaoke   from "./class/karaoke";
 
 // メイン処理
 (async() => {
-  const browser     = await puppeteer.launch();
+  const browser     = await puppeteer.launch({
+    ignoreHTTPSErrors: true
+  });
   let page          = await browser.newPage();
+  await pageLoadSetting(page);
 
   // コマンドライン引数からパラメータを取得
   const artist      = helper.getArtist(process.argv[2]);
@@ -18,6 +21,7 @@ import Karaoke   from "./class/karaoke";
 
   // カラオケサイトから曲を取得
   await fetchAllSongKaraoke(page, karaoke);
+  
   // 歌詞サイトから曲を取得
   await fetchAllSongLyricSite(page, lyricSite);
   // カラオケの曲配列と歌詞サイトの曲配列を比較し差分配列を作成
@@ -87,3 +91,19 @@ async function outputResult(result, karaoke) {
   console.log(result);
 }
 
+/**
+ * ページ読み込み時の設定を行う
+ *
+ * @param {*} page
+ */
+async function pageLoadSetting(page) {
+  // 画像、CSS、フォント、scriptの読み込みをしない指定で高速化
+  await page.setRequestInterception(true);
+  page.on('request', request => {
+    if (['image', 'stylesheet', 'font'].indexOf(request.resourceType()) !== -1) {
+      request.abort();
+    } else {
+      request.continue();
+    }
+  });
+}

@@ -1,5 +1,6 @@
 import consola from "consola";
 
+import helper from "../helper";
 import Karaoke from "./karaoke";
 
 class Joysound extends Karaoke {
@@ -12,79 +13,52 @@ class Joysound extends Karaoke {
   }
 
   async search(page) {
-    // DAMの場合検索ページにアーティストを入力してボタン押下
-    await page.goto(this.searchUrl, {waitUntil: "domcontentloaded"});
+    const s_artistList = "#searchresult > ul > li > div > a > div > div.jp-cmp-text > h3";
+
+    await page.goto(this.searchUrl, {waitUntil: "networkidle2"});
     
     // 検索して引っかかったアーティストの一覧を表示する
-    await page.type("#keyword", this.searchArtist);
-    await Promise.all([
-      page.click("#searchBtn"),
-      page.waitForNavigation({timeout: 60000, waitUntil: "domcontentloaded"}),
-    ]);
-
-    // アーティストの完全一致を調べる用
-    const artistList = await page.evaluate(() => {
-      const listSelector = "#content > div > table > tbody > tr > td.artist > a";
-      const list = Array.from(document.querySelectorAll(listSelector));
-      return list.map(data => data.innerText);
-    });
-
+    const artistList     = await helper.fetchEvaluateTextArray(page, s_artistList);
     const artistSelector = await fetchContainsSelector(this.searchArtist, artistList);
-
+    
     // アーティストのページへ遷移
-    await Promise.all([
-      page.click(artistSelector),
-      page.waitForNavigation({timeout: 60000, waitUntil: "domcontentloaded"}),
-    ]);
+    await helper.clickSelector(page, artistSelector);
   }
-  
+
   async fetchArtistSongs(page) {
-    let songsResult = [];
-    const lastIndex = await fetchLastIndex(page);
-    const nextSelector = "#content > div.inner > div:nth-child(4) > div > a:last-child";
+    const s_songList = "#songlist > div.jp-cmp-music-list-001.jp-cmp-music-list-song-002 > ul > li > div > a > h3";
+
+    const lastIndex  = await fetchLastIndex(page);
+    let songsResult  = [];
 
     for (let i = 0; i < lastIndex; i++) {
       // ページ内の曲をすべて配列で取得
-      const songs = await page.evaluate(() => {
-        const listSelector = "table.list > tbody > tr > td.song > a";
-        const list = Array.from(document.querySelectorAll(listSelector));
-        return list.map(data => data.innerText);
-      });
-
+      const songs = await helper.fetchEvaluateTextArray(page, s_songList);
       await songsResult.push(songs);
 
       // 次のページ行く
-      await Promise.all([
-        page.click(nextSelector),
-        page.waitForNavigation({timeout: 60000, waitUntil: "domcontentloaded"}),
-      ]);
+      let nextPageQuery = "?startIndex=" + (20 * (i + 1)) + "#songlist";
+      await page.goto(page.url() + nextPageQuery, {waitUntil: "networkidle2"});
     }
     // ページごとに区切られた2次元配列を1次元にして返す
-    return Array.prototype.concat.apply([], songsResult);
+    // JOYSOUNDは「[MV]イオ／ユナイト」みたいな感じで後ろにアーティスト名ついてるので曲名だけ抜く
+    return Array.prototype.concat.apply([], songsResult).map(song => song.match(/.*(?=／)/g)[0]);
   }
 }
 
 async function fetchLastIndex(page) {
-  // 正規表現で抜きだす用の文字列を取得する
-  let captionStr = await page.evaluate(() => {
-    const selector = "#content > div.inner > div:nth-child(2) > div.searchResult.clearfix > p:nth-child(2)";
-    return document.querySelector(selector).textContent;
-  });
-  
-  // 正規表現で最後のページの数字を抜き出す
-  return captionStr.match(/[\d]{1,2}/g)[1];
+  const s_caption = "#songlist > nav > div.jp-cmp-sp-none > ol > li:last-child > a";
+  return helper.fetchEvaluateText(page, s_caption);
 }
 
 async function fetchContainsSelector(artist, artistList) {
   // 完全一致で一致したアーティストをクリックする
   let index = artistList.indexOf(artist);
-  // TODO アーティストいなかった時はエラーメッセージ出して終わらせたい
   if(index == -1) {
     consola.error("完全一致するアーティストがいません");
     process.exit(1);
   }
-
-  return "#content > div > table > tbody > tr:nth-child(" + (index + 1) + ") > td.artist > a";
+  return "#searchresult > ul > li:nth-child(" + (index + 1) + ") > div > a > div > div.jp-cmp-text > h3";
 }
 
 export default Joysound;
