@@ -8,8 +8,8 @@ import Utanet from "./class/utanet";
 import JLyric from "./class/jLyric";
 
 exports.getKaraoke = function(artist, karaokeType) {
-  if(karaokeType == "DAM")      return new Dam(artist);
-  if(karaokeType == "JOYSOUND") return new Joysound(artist);
+  if(karaokeType == "d") return new Dam(artist);
+  if(karaokeType == "j") return new Joysound(artist);
 
   // 入力された数値がDAMでもJOYSOUNDでもない文字列の場合
   consola.error(karaokeType + "はカラオケ機種ではありません。DAMかJOYSOUNDで選択してください。");

@@ -24,11 +24,19 @@ Acquire songs that are not in singer's japanese karaoke(DAM or JoySound).
 
 # Usage(使用方法)
 
-- `npm run start アーティスト名 カラオケ機種(JoySound or DAM)`
-- `yarn start アーティスト名 カラオケ機種(JoySound or DAM)`
+- `npm run start アーティスト名 カラオケ機種(j or d)`
+- `yarn start アーティスト名 カラオケ機種(j or d)`
 
-- `npm run start artistName karaokeType(JoySound or DAM)`
-- `yarn start artistName karaokeType(JoySound or DAM)`
+- `npm run start artistName karaokeType(j or d)`
+- `yarn start artistName karaokeType(j or d)`
+
+- j means JoySound.
+- d means DAM.
+
+# Song Source(曲取得元)
+- [JoySound](https://www.joysound.com/web/search/artist/8583)
+- [DAM](https://www.clubdam.com/app/leaf/artistKaraokeLeaf.html?artistCode=306474)
+- [歌ネット](https://www.uta-net.com/search/?Aselect=1&Keyword=%E3%82%B7%E3%83%89&Bselect=4&x=30&y=18)
 
 ## example(例)
 
