@@ -6,7 +6,7 @@
 
 <img src="./readme_picture/result.png" width="60%">
 
-# 概要(Description)
+# Description(概要)
 
 歌手ごとのカラオケに入っていない曲を抽出してきて出力します。
 
