@@ -20,15 +20,6 @@ exports.getLyricSite = function(artist) {
   return new Utanet(artist);
 }
 
-exports.getArtist = function(artist) {
-  if(artist.indexOf("_") != -1) {
-    return artist.split("_").join(" ");
-  }
-  else {
-    return artist;
-  }
-}
-
 // 曲名を比較用文字列に変換する
 exports.sanitizeSongName = function(song) {
   // 記号の全角、半角を統一

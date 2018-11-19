@@ -35,8 +35,8 @@ Acquire songs that are not in singer's japanese karaoke(DAM or JoySound).
 
 ## example(例)
 
--  `yarn start ViViD DAM`
--  `yarn start Plastic_Tree DAM`
+-  `yarn start "ViViD" DAM`
+-  `yarn start "Plastic Tree" DAM`
 
 # Song Source(曲取得元)
 - [JoySound](https://www.joysound.com/web/search/artist/8583)
@@ -45,10 +45,8 @@ Acquire songs that are not in singer's japanese karaoke(DAM or JoySound).
 
 # Q&A
 
-- アーティスト名にスペースが含まれる場合は？
-  - スペース( )をアンダーバー(_)に置き換えて入力してください。
-- If the artist name contains a space？(ex.Plastic Tree)
-  - Please replace space( ) with underscore(_).
+  - カラオケに入っているはずの曲が出力されるんだけど
+    - カラオケサイトと歌詞サイトの表記揺れです(できれば対応したい)
 
 # Licence(ライセンス)
 

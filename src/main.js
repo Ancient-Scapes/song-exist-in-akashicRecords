@@ -1,5 +1,6 @@
 import puppeteer from "puppeteer";
 import consola   from "consola";
+const parseArgs =  require('minimist')(process.argv);
 
 import helper    from "./helper";
 import LyricSite from "./class/lyricSite";
@@ -14,8 +15,8 @@ import Karaoke   from "./class/karaoke";
   await pageLoadSetting(page);
 
   // コマンドライン引数からパラメータを取得
-  const artist      = helper.getArtist(process.argv[2]);
-  const karaokeType = process.argv[3];
+  const artist      = parseArgs._[2];
+  const karaokeType = parseArgs._[3];
   let karaoke       = helper.getKaraoke(artist, karaokeType);
   let lyricSite     = helper.getLyricSite(artist);
 
@@ -88,7 +89,7 @@ async function compareSongResult(karaoke, lyricSite) {
  */
 async function outputResult(result, karaoke) {
   consola.success(karaoke.searchArtist + "の" + karaoke.name + "に入っていない曲リスト");
-  console.log(result);
+  console.table(result);
 }
 
 /**

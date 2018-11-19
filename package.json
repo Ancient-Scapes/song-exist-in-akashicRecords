@@ -15,6 +15,7 @@
     "babel-preset-env": "^1.7.0",
     "consola": "^1.4.3",
     "jaconv": "^1.0.1",
+    "minimist": "^1.2.0",
     "puppeteer": "^1.8.0"
   }
 }
